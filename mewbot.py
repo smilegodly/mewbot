@@ -26,7 +26,6 @@ async def on_ready():
 	print(bot.user.id)
 	print("-------------")
 
-#bot.loop.create_task(time_check()) #UNDER CONSTRUCTION :)
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))
 bot.run(secret)

@@ -7,15 +7,17 @@ from discord import Game
 import asyncio
 from datetime import datetime
 import youtube_dl
-from secret import secret
 from utils.funcs import Funcs
 from utils.ytplayer import Music
+from utils.secretgrabber import getSecret
 
 PREFIX = ("!", "?", "./", "~")
 
 bot = commands.Bot(command_prefix=PREFIX)
 
 bot.remove_command('help')
+
+secret = getSecret()
 
 @bot.event
 async def on_ready():

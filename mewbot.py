@@ -6,10 +6,16 @@ from discord.ext import commands
 from discord import Game
 import asyncio
 from datetime import datetime
+from datetime import time
 import youtube_dl
 from utils.funcs import Funcs
 from utils.ytplayer import Music
 from utils.secretgrabber import getSecret
+from utils.apod import Apod
+from itertools import cycle
+import io
+import aiohttp
+
 
 PREFIX = ("!", "?", "./", "~")
 
@@ -28,6 +34,40 @@ async def on_ready():
 	print(bot.user.id)
 	print("-------------")
 
+
+async def my_background_task():
+	await bot.wait_until_ready()
+	morningTime = time.fromisoformat('09:00')
+	now = datetime.now()
+	channel = bot.get_channel(409198534949077024) # channel ID
+	while not bot.is_closed():
+		if(now.hour == morningTime.hour):
+			
+			data = Apod.getApodData()
+
+			if(data['media_type'] == 'image'):
+				imgUrl = data['url']
+				explanation = data['explanation']
+				postDate = data['date']
+				title = data['title']
+				
+				#gets image from a URL
+				async with aiohttp.ClientSession() as session:
+					async with session.get(imgUrl) as resp:
+						if resp.status != 200:
+							return await channel.send('Could not download file...')
+						data = io.BytesIO(await resp.read()) #create BytesIO instance
+
+				await channel.send(":rocket:"+ "\t" + "__**" + title + "**__" +"\t" + ":rocket:" + 
+					"\t" + "__**" + postDate + "**__" + "\t" + ":rocket:" + "\n")
+				await channel.send(file=discord.File(data, 'apod.png'))
+				await channel.send("```" + "\n" + explanation + "\n" + "```")
+
+			#elif(data['media_type'] == 'video'):
+
+		await asyncio.sleep(5*60) # task to runs every 30 mins
+
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))
+task = bot.loop.create_task(my_background_task())
 bot.run(secret)

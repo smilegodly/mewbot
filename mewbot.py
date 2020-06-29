@@ -37,10 +37,10 @@ async def on_ready():
 
 async def my_background_task():
 	await bot.wait_until_ready()
-	morningTime = time.fromisoformat('09:00')
-	now = datetime.now()
+	morningTime = time.fromisoformat('08:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
 	while not bot.is_closed():
+		now = datetime.now()
 		if(now.hour == morningTime.hour):
 			
 			data = Apod.getApodData()

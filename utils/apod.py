@@ -19,13 +19,3 @@ class Apod(commands.Cog):
 			data = json.loads(response.read().decode())
 
 		return data
-
-'''
-	async def createBytesInstance(my_url):
-		async with aiohttp.ClientSession() as session:
-			async with session.get(my_url) as resp:
-				if resp.status != 200:
-					return await channel.send('Could not download file...')
-				data = io.BytesIO(await resp.read()) #create BytesIO instance
-				return data
-'''

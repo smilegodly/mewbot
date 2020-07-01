@@ -37,29 +37,23 @@ async def on_ready():
 
 async def my_background_task():
 	await bot.wait_until_ready()
-	morningTime = time.fromisoformat('10:00')
+	morningTime = time.fromisoformat('11:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
 	while not bot.is_closed():
 		now = datetime.now()
 		if(now.hour == morningTime.hour):
-			
 			apodData = Apod.getApodData()
-
 			if(apodData['media_type'] == 'image'):
-
-				data = getImageFromUrl(apodData['url'])
-
+				data = Funcs.getImageFromUrl(apodData['url'])
 				await channel.send(":rocket:"+ "\t" + "__**" + apodData['title'] + "**__" +"\t" + ":rocket:" + 
 					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(file=discord.File(data, 'apod.png'))
 				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
-
 			elif(apodData['media_type'] == 'video'):
 				await channel.send(":rocket:"+ "\t" + "__**" + apodData['title'] + "**__" +"\t" + ":rocket:" + 
 					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(apodData['url'].replace("?rel=0", "").replace("embed/", "watch?v=") + "\n")
 				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
-
 		await asyncio.sleep(5*60) # task to runs every 30 mins
 
 bot.add_cog(Music(bot))

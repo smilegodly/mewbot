@@ -63,7 +63,19 @@ async def my_background_task():
 				await channel.send(file=discord.File(data, 'apod.png'))
 				await channel.send("```" + "\n" + explanation + "\n" + "```")
 
-			#elif(data['media_type'] == 'video'):
+			elif(data['media_type'] == 'video'):
+				ytUrl = data['url']
+				explanation = data['explanation']
+				postDate = data['date']
+				title = data['title']
+
+				ytUrl = ytUrl.replace("?rel=0", "")
+				ytUrl = ytUrl.replace("embed/", "watch?v=")
+				
+				await channel.send(":rocket:"+ "\t" + "__**" + title + "**__" +"\t" + ":rocket:" + 
+					"\t" + "__**" + postDate + "**__" + "\t" + ":rocket:" + "\n")
+				await channel.send(ytUrl + "\n")
+				await channel.send("```" + "\n" + explanation + "\n" + "```")
 
 		await asyncio.sleep(5*60) # task to runs every 30 mins
 

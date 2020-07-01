@@ -37,45 +37,28 @@ async def on_ready():
 
 async def my_background_task():
 	await bot.wait_until_ready()
-	morningTime = time.fromisoformat('08:00')
+	morningTime = time.fromisoformat('10:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
 	while not bot.is_closed():
 		now = datetime.now()
 		if(now.hour == morningTime.hour):
 			
-			data = Apod.getApodData()
+			apodData = Apod.getApodData()
 
-			if(data['media_type'] == 'image'):
-				imgUrl = data['url']
-				explanation = data['explanation']
-				postDate = data['date']
-				title = data['title']
-				
-				#gets image from a URL
-				async with aiohttp.ClientSession() as session:
-					async with session.get(imgUrl) as resp:
-						if resp.status != 200:
-							return await channel.send('Could not download file...')
-						data = io.BytesIO(await resp.read()) #create BytesIO instance
+			if(apodData['media_type'] == 'image'):
 
-				await channel.send(":rocket:"+ "\t" + "__**" + title + "**__" +"\t" + ":rocket:" + 
-					"\t" + "__**" + postDate + "**__" + "\t" + ":rocket:" + "\n")
+				data = getImageFromUrl(apodData['url'])
+
+				await channel.send(":rocket:"+ "\t" + "__**" + apodData['title'] + "**__" +"\t" + ":rocket:" + 
+					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(file=discord.File(data, 'apod.png'))
-				await channel.send("```" + "\n" + explanation + "\n" + "```")
+				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
 
-			elif(data['media_type'] == 'video'):
-				ytUrl = data['url']
-				explanation = data['explanation']
-				postDate = data['date']
-				title = data['title']
-
-				ytUrl = ytUrl.replace("?rel=0", "")
-				ytUrl = ytUrl.replace("embed/", "watch?v=")
-				
-				await channel.send(":rocket:"+ "\t" + "__**" + title + "**__" +"\t" + ":rocket:" + 
-					"\t" + "__**" + postDate + "**__" + "\t" + ":rocket:" + "\n")
-				await channel.send(ytUrl + "\n")
-				await channel.send("```" + "\n" + explanation + "\n" + "```")
+			elif(apodData['media_type'] == 'video'):
+				await channel.send(":rocket:"+ "\t" + "__**" + apodData['title'] + "**__" +"\t" + ":rocket:" + 
+					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
+				await channel.send(apodData['url'].replace("?rel=0", "").replace("embed/", "watch?v=") + "\n")
+				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
 
 		await asyncio.sleep(5*60) # task to runs every 30 mins
 

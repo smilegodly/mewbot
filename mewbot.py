@@ -15,7 +15,6 @@ from utils.apod import Apod
 from itertools import cycle
 import io
 import aiohttp
-from boto.s3.connection import S3Connection
 import os
 
 

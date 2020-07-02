@@ -25,7 +25,7 @@ bot = commands.Bot(command_prefix=PREFIX)
 
 bot.remove_command('help')
 
-#secret = getSecret()
+secret = getSecret()
 
 @bot.event
 async def on_ready():
@@ -68,5 +68,5 @@ async def apod_task():
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))
 task = bot.loop.create_task(apod_task())
-token = os.environ.get("BOT_TOKEN")
-bot.run(token)
+#token = os.environ.get("BOT_TOKEN")
+bot.run(secret)

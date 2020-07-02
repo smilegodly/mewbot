@@ -32,7 +32,6 @@ MarkupSafe==1.0
 multidict==4.7.5
 netifaces==0.10.4
 oauthlib==2.0.6
-PAM==0.4.2
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
 pycparser==2.20

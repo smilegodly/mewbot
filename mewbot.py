@@ -35,7 +35,7 @@ async def on_ready():
 	print("-------------")
 
 
-async def my_background_task():
+async def apod_task():
 	await bot.wait_until_ready()
 	morningTime = time.fromisoformat('08:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
@@ -61,9 +61,9 @@ async def my_background_task():
 					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(apodData['url'].replace("?rel=0", "").replace("embed/", "watch?v=") + "\n")
 				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
-		await asyncio.sleep(12*(60*60)) # task to run twice a day
+		await asyncio.sleep(1*(60*60)) # task to run once hourly
 
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))
-task = bot.loop.create_task(my_background_task())
+task = bot.loop.create_task(apod_task())
 bot.run(secret)

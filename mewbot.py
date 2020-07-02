@@ -38,7 +38,7 @@ async def on_ready():
 async def apod_task():
 	await bot.wait_until_ready()
 	morningTime = time.fromisoformat('08:00')
-	channel = bot.get_channel(409198534949077024) # channel ID
+	channel = bot.get_channel(518253505669103617) # channel ID
 	while not bot.is_closed():
 		now = datetime.now()
 		if(now.hour == morningTime.hour):

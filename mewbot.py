@@ -37,7 +37,7 @@ async def on_ready():
 
 async def my_background_task():
 	await bot.wait_until_ready()
-	morningTime = time.fromisoformat('07:00')
+	morningTime = time.fromisoformat('08:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
 	while not bot.is_closed():
 		now = datetime.now()
@@ -45,7 +45,7 @@ async def my_background_task():
 			apodData = Apod.getApodData()
 			if(apodData['media_type'] == 'image'):
 
-				#gets image from a URL
+				#gets image from a URL 
 				async with aiohttp.ClientSession() as session:
 					async with session.get(apodData['url']) as resp:
 						if resp.status != 200:
@@ -61,7 +61,7 @@ async def my_background_task():
 					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(apodData['url'].replace("?rel=0", "").replace("embed/", "watch?v=") + "\n")
 				await channel.send("```" + "\n" + apodData['explanation'] + "\n" + "```")
-		await asyncio.sleep(5*60) # task to runs every 30 mins
+		await asyncio.sleep(12*(60*60)) # task to run twice a day
 
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))

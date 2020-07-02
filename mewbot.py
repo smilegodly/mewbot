@@ -15,6 +15,8 @@ from utils.apod import Apod
 from itertools import cycle
 import io
 import aiohttp
+from boto.s3.connection import S3Connection
+import os
 
 
 PREFIX = ("!", "?", "./", "~")
@@ -66,4 +68,5 @@ async def apod_task():
 bot.add_cog(Music(bot))
 bot.add_cog(Funcs(bot))
 task = bot.loop.create_task(apod_task())
-bot.run(BOT_TOKEN)
+token = os.environ.get("BOT_TOKEN")
+bot.run(token)

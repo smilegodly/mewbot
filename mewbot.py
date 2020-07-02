@@ -37,14 +37,21 @@ async def on_ready():
 
 async def my_background_task():
 	await bot.wait_until_ready()
-	morningTime = time.fromisoformat('11:00')
+	morningTime = time.fromisoformat('07:00')
 	channel = bot.get_channel(409198534949077024) # channel ID
 	while not bot.is_closed():
 		now = datetime.now()
 		if(now.hour == morningTime.hour):
 			apodData = Apod.getApodData()
 			if(apodData['media_type'] == 'image'):
-				data = Funcs.getImageFromUrl(apodData['url'])
+
+				#gets image from a URL
+				async with aiohttp.ClientSession() as session:
+					async with session.get(apodData['url']) as resp:
+						if resp.status != 200:
+							return await channel.send('Could not download file...')
+						data = io.BytesIO(await resp.read()) #create BytesIO instance
+
 				await channel.send(":rocket:"+ "\t" + "__**" + apodData['title'] + "**__" +"\t" + ":rocket:" + 
 					"\t" + "__**" + apodData['date'] + "**__" + "\t" + ":rocket:" + "\n")
 				await channel.send(file=discord.File(data, 'apod.png'))

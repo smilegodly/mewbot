@@ -82,10 +82,3 @@ class Funcs(commands.Cog):
 				await ctx.send(returnMsg.format(buy_avg, sell_avg, num_bought, num_sold))
 				return
 		await ctx.send("Item not found")
-
-	async def getImageFromUrl(imageUrl):
-		async with aiohttp.ClientSession() as session:
-			async with session.get(imageUrl) as resp:
-				if resp.status != 200:
-					return await channel.send('Could not download file...')
-				return io.BytesIO(await resp.read()) #create BytesIO instance

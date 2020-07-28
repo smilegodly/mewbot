@@ -5,6 +5,7 @@ from discord.ext import commands
 from discord import Game
 import asyncio
 from datetime import datetime
+from howdoi import howdoi
 
 class Funcs(commands.Cog):
 	def __init__(self, bot):
@@ -30,22 +31,22 @@ class Funcs(commands.Cog):
 		await ctx.author.send(embed=embed)
 
 	@commands.command()
-	async def howdoi(self,ctx,question):
+	async def howdoi(self,ctx,question):#sanitize the **** out of the user input (question)
+			
 		# Get howdoi answer 
-		command = 'howdoi'
-		cmd = [command, question]
-		subprocess.run(cmd)
-		check = command + ' ' + question
-		output = subprocess.check_output(check, shell=True, universal_newlines=True)
+		query = question
+		parser = howdoi.get_parser()
+		args = vars(parser.parse_args(query.split(' ')))
+		output = howdoi.howdoi(args)
 		await ctx.send("```" + "\n" + output + "\n" + "```")
 		
 		# Get stackoverflow Link to that answer
 		linkCommand = '-l'
-		linkCmd = [command, linkCommand, question]
-		subprocess.run(linkCmd)
-		linkCheck = command + ' ' + linkCommand + ' ' + question
-		linkOutput = subprocess.check_output(linkCheck, shell=True, universal_newlines=True)
-		await ctx.send("\n" + linkOutput + "\n")
+		query = linkCommand + ' ' + question
+		parser = howdoi.get_parser()
+		args = vars(parser.parse_args(query.split(' ')))
+		output = howdoi.howdoi(args)
+		await ctx.send("\n" + output + "\n")
 		return
 
 	@commands.command()

@@ -4,7 +4,7 @@
 Python3.7+ is required to run.
 
 # Run
-pip install -r requirements.txt
+install dependencies with `pip install -r requirements.txt`
 
 run with `python3 mewbot.py`
 

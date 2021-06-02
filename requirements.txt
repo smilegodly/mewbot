@@ -51,7 +51,7 @@ service-identity==16.0.0
 six==1.14.0
 systemd-python==234
 Twisted==17.9.0
-urllib3==1.25.9
+urllib3==1.26.5
 websockets==8.1
 yarl==1.4.2
 youtube-dl==2020.3.24
